@@ -6,13 +6,13 @@ This utility uses bash functions, glab and the gitlab API to migrate Gitlab proj
 
 The conf.sh script requires setting the following ENV_VARS:
 
-SOURCE_GITLAB_HOST
-SOURCE_GITLAB_TOKEN
-TARGET_GITLAB_HOST
-TARGET_GITLAB_TOKEN
-SOURCE_ROOT_GROUP
-TARGET_PARENT_GROUP
-TARGET_GROUP
+- SOURCE_GITLAB_HOST
+- SOURCE_GITLAB_TOKEN
+- TARGET_GITLAB_HOST
+- TARGET_GITLAB_TOKEN
+- SOURCE_ROOT_GROUP
+- TARGET_PARENT_GROUP
+- TARGET_GROUP
 
 The meaning of the variables are explained in the comments within conf.sh.
 
