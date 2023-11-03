@@ -10,12 +10,10 @@ function login() {
 REMOTE=$1
 if [ ${REMOTE} == "source"  ]
 then
-# Ost Gitlab:
     export GITLAB_TOKEN=$SOURCE_GITLAB_TOKEN
     export GITLAB_HOST=$SOURCE_GITLAB_HOST
 elif [ ${REMOTE} == "target" ]
 then
-# Ace Gitlab:
     export GITLAB_TOKEN=$TARGET_GITLAB_TOKEN
     export GITLAB_HOST=$TARGET_GITLAB_HOST
 else 
@@ -41,7 +39,7 @@ echo "======================================="
 login source
 source_array=( $(glab api /groups/$SOURCE_ROOT_GROUP/projects?include_subgroups=true --paginate  | jq '.[] | {path_with_namespace} | join(" ")' | tr -d '"') )
 source_subgroup_array=( $(glab api /groups/$SOURCE_ROOT_GROUP/subgroups --paginate | jq '.[] | {name} | join (" ")' | tr -d '"') )
-# project_array=( $(glab api /groups/$SOURCE_ROOT_GROUP/projects?include_subgroups=true | jq '.[] | {path_with_namespace} | join(" ")' | tr -d '"' ) )
+
 for i in ${!source_array[@]} 
 do
   echo ${source_array[$i]} >> source_list.txt
@@ -50,7 +48,7 @@ for i in ${!source_subgroup_array[@]}
 do
   echo ${source_subgroup_array[$i]} >> source_subgroup_list.txt
 done
-read -p "Press edit the project and subgroup list to your liking. Press any key to continue with project migration:" input
+read -p "Please edit the project and subgroup list to your liking. Press any key to continue with project migration:" input
 echo "======================================="
 }
 
@@ -60,9 +58,6 @@ echo "CREATE_TARGET_GROUPS"
 echo "======================================="
 # This functions creates the group and subgroup structure on the target host:
 login target
-
-# List Groups:
-# curl "https://$GITLAB_HOST/api/v4/groups" --header "PRIVATE-TOKEN: ${GITLAB_TOKEN}" | jq '.[]'
 
 # Get Parent ID of TARGET_PARENT_GROUP:
 PARENT_ID=$(curl "https://$GITLAB_HOST/api/v4/groups" --header "PRIVATE-TOKEN: ${GITLAB_TOKEN}" | jq --arg group_name "$TARGET_PARENT_GROUP" '.[] | select( .name == $group_name ) | {id} | join (" ")' | tr -d '"' )
